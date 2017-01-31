@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Movie autocomplete</title>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
+<link rel="stylesheet" href="css/bootcomplete.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/jquery.bootcomplete.js"></script>
+
+</head>
+<body>
+
+	<div class="container">
+
+		<div class="starter-template">
+			<h1>Movie DB</h1>
+			<p class="lead">
+				Sample autocomplete for a movie DB.<br>
+			</p>
+
+			<input id="example1" type="text" name="country"
+				placeholder="Enter a Movie" class="form-control">
+
+		</div>
+
+		<script type="text/javascript">
+			$('#example1').bootcomplete({
+				url : 'autocomplete'
+			});
+		</script>
+	</div>
+
+</body>
+</html>
