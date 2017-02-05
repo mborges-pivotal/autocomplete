@@ -5,7 +5,8 @@ I started from the spring boot sample for appengine that you see below.
 * define data layer
 * implement loader
 
-You can try the current version [here](https://autocomplete-157201.appspot.com) running on appengine.
+You can try the current version [here](https://autocomplete-157201.appspot.com)ls
+ running on appengine.
 
 ## Spring Boot based Hello World app
 

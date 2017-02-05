@@ -17,24 +17,35 @@
 package com.borgescloud.appengine.autocomplete;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.borgescloud.appengine.autocomplete.NgramParser.Response;
+import com.borgescloud.appengine.autocomplete.algo.Autocomplete;
+import com.borgescloud.appengine.autocomplete.algo.AbstractAutocomplete.Response;
 
 @SpringBootApplication
 @RestController
 public class Application {
 	
 	@Autowired
-	private NgramParser ngrams;
+	@Qualifier("localstore")
+	private Autocomplete store;
 
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	/////////////////////////////////
+	// RestController
+	/////////////////////////////////
+	
 	@RequestMapping("/autocomplete")
 	public Response[] autocomplete(String query, @RequestParam(value="max", required=false, defaultValue="3") int max) {
-		return ngrams.getNgramMatch(query, max);
+		return store.getNgramMatch(query, max);
 	}
 
 	/**
@@ -47,10 +58,6 @@ public class Application {
 	public String healthy() {
 		// Message body required though ignored
 		return "Still surviving.";
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
 	}
 
 }
