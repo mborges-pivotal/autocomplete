@@ -5,14 +5,15 @@ import java.io.Reader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import com.borgescloud.appengine.autocomplete.algo.AutocompleteStore;
+import com.borgescloud.appengine.autocomplete.AutocompleteStore;
 
 /**
  * ProductLoader
@@ -23,33 +24,29 @@ import com.borgescloud.appengine.autocomplete.algo.AutocompleteStore;
 
 @Component
 public class ProductLoader implements CommandLineRunner {
+	
+	private Log log = LogFactory.getLog(ProductLoader.class);
 
 	@Value("${autocomplete.load}")
 	private Resource loadFile;
 	
 	@Autowired
-	@Qualifier("localstore")
 	private AutocompleteStore store;
 	
 	// run
 	public void run(String... arg0) throws Exception {
 
-		int total = 0;
-		
 		Reader in = new InputStreamReader(loadFile.getInputStream());
 		
 		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
 		for (CSVRecord record : records) {	
-			long recordNumber = record.getRecordNumber();
-			String name = record.get(0).trim();
+			String name = record.get(0).trim(); // dvd_title
+			String upc = record.get(11).trim(); // upc
 			
-			store.addProduct(recordNumber, name);
-			total += 1;
+			store.addProduct(upc, name);
 		}
 
-		System.out.printf("total records: %d\n", total);
-
-		store.stats();
+		log.info(store.stats());
 	}
 
 } // class

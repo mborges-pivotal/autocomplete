@@ -1,4 +1,4 @@
-package com.borgescloud.appengine.autocomplete.algo;
+package com.borgescloud.appengine.autocomplete;
 
 import java.util.ArrayList;
 import java.util.HashMap;
