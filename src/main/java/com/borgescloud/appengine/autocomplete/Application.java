@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.borgescloud.appengine.autocomplete.AbstractAutocomplete.Response;
+import com.borgescloud.appengine.autocomplete.AbstractAutocomplete.Stats;
+import com.borgescloud.appengine.autocomplete.loader.ProductLoader;
 
 @SpringBootApplication
 @RestController
@@ -31,6 +33,9 @@ public class Application {
 	
 	@Autowired
 	private AutocompleteStore store;
+	
+	@Autowired
+	private ProductLoader loader;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -51,6 +56,11 @@ public class Application {
 		return "success";
 	}
 
+	@RequestMapping("/load")
+	public Stats seed() throws Exception {
+		return loader.load();
+	}
+	
 	/**
 	 * <a href=
 	 * "https://cloud.google.com/appengine/docs/flexible/java/how-instances-are-managed#health_checking">

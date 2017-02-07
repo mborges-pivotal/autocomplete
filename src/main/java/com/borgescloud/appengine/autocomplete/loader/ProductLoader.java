@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import com.borgescloud.appengine.autocomplete.AbstractAutocomplete.Stats;
 import com.borgescloud.appengine.autocomplete.AutocompleteStore;
 
 /**
@@ -34,19 +35,47 @@ public class ProductLoader implements CommandLineRunner {
 	private AutocompleteStore store;
 	
 	// run
-	public void run(String... arg0) throws Exception {
-
+	public void run(String... args) throws Exception {
+		
+		if (args.length > 0) {
+			log.info("seeding cache...");
+			load();
+		} else {
+			return;
+		}
+		
+		for(String arg: args) {
+			log.info(arg);
+		}
+		
+	}
+	
+	public Stats load() throws Exception {
 		Reader in = new InputStreamReader(loadFile.getInputStream());
+		
+		int total = 0;
 		
 		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(in);
 		for (CSVRecord record : records) {	
 			String name = record.get(0).trim(); // dvd_title
 			String upc = record.get(11).trim(); // upc
+		
+			total++;
 			
 			store.addProduct(upc, name);
+			
+			if (total % 100 == 0) {
+				log.info(String.format("loaded %d records...", total));
+			}
 		}
-
+		
+		if (in != null) {
+			in.close();
+		}
+		
 		log.info(store.stats());
+		
+		return store.stats();
 	}
 
 } // class

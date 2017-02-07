@@ -1,9 +1,10 @@
 # Autocomplete sample
 I started from the spring boot sample for appengine that you see below. 
 
-**TODO**
-* define data layer
-* implement loader
+```
+mvn spring-boot:run -Drun.arguments=anything - seeds the indexes
+mvn spring-boot:run -Dspring.profiles.active=cloud - select cloud profile
+```
 
 You can try the current version [here](https://autocomplete-157201.appspot.com)ls
  running on appengine.
